@@ -31,30 +31,30 @@
 <main>
   <section>
     <h2>1. ¿Es sujeto de crédito?</h2>
-    <code>GET api/creditos/sujeto/{cedula}</code>
+    <code>GET webresources/creditos/sujeto/{cedula}</code>
     <label>Cédula <input id="cedula" value="1712345678"></label>
-    <button onclick="llamar('GET','api/creditos/sujeto/'+val('cedula'))">Verificar</button>
+    <button onclick="llamar('GET','webresources/creditos/sujeto/'+val('cedula'))">Verificar</button>
   </section>
   <section>
     <h2>2. Monto máximo de crédito</h2>
-    <code>GET api/creditos/monto-maximo/{codCliente}</code>
+    <code>GET webresources/creditos/monto-maximo/{codCliente}</code>
     <label>Código de cliente <input id="codMax" value="1" type="number"></label>
-    <button onclick="llamar('GET','api/creditos/monto-maximo/'+val('codMax'))">Calcular</button>
+    <button onclick="llamar('GET','webresources/creditos/monto-maximo/'+val('codMax'))">Calcular</button>
   </section>
   <section>
     <h2>3. Otorgar crédito</h2>
-    <code>POST api/creditos</code>
+    <code>POST webresources/creditos</code>
     <label>Código de cliente <input id="codCli" value="1" type="number"></label>
     <label>Precio del celular <input id="precio" value="450" type="number" step="0.01"></label>
     <label>Número de cuotas (3 - 18) <input id="cuotas" value="6" type="number" min="3" max="18"></label>
-    <button onclick="llamar('POST','api/creditos',{codCliente:+val('codCli'),precioTelefono:+val('precio'),numeroCuotas:+val('cuotas')})">Otorgar</button>
+    <button onclick="llamar('POST','webresources/creditos',{codCliente:+val('codCli'),precioTelefono:+val('precio'),numeroCuotas:+val('cuotas')})">Otorgar</button>
   </section>
   <section>
     <h2>4. Tabla de amortización</h2>
-    <code>GET api/creditos/{codCredito}/amortizacion</code>
+    <code>GET webresources/creditos/{codCredito}/amortizacion</code>
     <label>Código de crédito <input id="codCre" value="1" type="number"></label>
-    <button onclick="llamar('GET','api/creditos/'+val('codCre')+'/amortizacion')">Consultar</button>
-    <p style="font-size:13px;margin-bottom:0">También: <code>GET api/creditos/cliente/{cedula}</code></p>
+    <button onclick="llamar('GET','webresources/creditos/'+val('codCre')+'/amortizacion')">Consultar</button>
+    <p style="font-size:13px;margin-bottom:0">También: <code>GET webresources/creditos/cliente/{cedula}</code></p>
   </section>
   <section id="salida">
     <h2>Respuesta</h2>

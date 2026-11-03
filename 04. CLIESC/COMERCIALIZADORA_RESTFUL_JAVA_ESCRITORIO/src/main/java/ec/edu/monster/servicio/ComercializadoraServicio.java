@@ -25,7 +25,23 @@ import java.util.List;
  */
 public class ComercializadoraServicio {
 
-    public static final String URL_POR_DEFECTO = "http://localhost:8080/COMERCIALIZADORA/api";
+    /** Servidor por defecto (misma PC). Desde otra máquina se usa la IP de la PC servidor, ej. 10.97.118.144:8080 */
+    public static final String SERVIDOR_POR_DEFECTO = "localhost:8080";
+    /** Ruta del servicio REST: /<proyecto>/webresources (convención de NetBeans, igual que los proyectos anteriores). */
+    public static final String RUTA = "/COMERCIALIZADORA_RESTFUL_JAVA_GR06/webresources";
+    public static final String URL_POR_DEFECTO = url(SERVIDOR_POR_DEFECTO);
+
+    /** "10.97.118.144:8080" -> "http://10.97.118.144:8080/COMERCIALIZADORA_RESTFUL_JAVA_GR06/webresources" */
+    public static String url(String servidor) {
+        String s = servidor == null ? "" : servidor.trim();
+        if (s.isEmpty()) {
+            s = SERVIDOR_POR_DEFECTO;
+        }
+        if (s.startsWith("http://") || s.startsWith("https://")) {
+            return s; // ya es una URL completa
+        }
+        return "http://" + (s.contains(":") ? s : s + ":8080") + RUTA;
+    }
 
     private final Gson gson = new Gson();
     private final String urlBase;

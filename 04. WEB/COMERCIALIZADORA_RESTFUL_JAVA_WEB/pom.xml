@@ -32,7 +32,7 @@
     </dependencies>
 
     <build>
-        <finalName>COMERCIALIZADORA_WEB</finalName>
+        <finalName>COMERCIALIZADORA_RESTFUL_JAVA_WEB</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

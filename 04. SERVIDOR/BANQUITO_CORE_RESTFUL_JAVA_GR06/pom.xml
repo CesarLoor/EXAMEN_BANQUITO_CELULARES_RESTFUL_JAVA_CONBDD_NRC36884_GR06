@@ -38,7 +38,7 @@
     </dependencies>
 
     <build>
-        <finalName>BANQUITO_CORE</finalName>
+        <finalName>BANQUITO_CORE_RESTFUL_JAVA_GR06</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

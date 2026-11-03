@@ -10,6 +10,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.Locale;
+import java.util.prefs.Preferences;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -24,7 +25,10 @@ public class LoginVista extends JFrame {
 
     private final JTextField txtUsuario = new JTextField(18);
     private final JPasswordField txtClave = new JPasswordField(18);
-    private final JTextField txtServidor = new JTextField(ComercializadoraServicio.URL_POR_DEFECTO, 18);
+    // Recuerda el último servidor usado (IP:puerto de la PC donde corre Payara)
+    private static final Preferences PREFS = Preferences.userNodeForPackage(LoginVista.class);
+    private final JTextField txtServidor = new JTextField(
+            PREFS.get("servidor", ComercializadoraServicio.SERVIDOR_POR_DEFECTO), 18);
 
     public LoginVista() {
         super("Comercializadora de Celulares - Acceso");
@@ -44,7 +48,7 @@ public class LoginVista extends JFrame {
         g.fill = GridBagConstraints.HORIZONTAL;
         agregar(form, g, 0, "Usuario", txtUsuario);
         agregar(form, g, 1, "Contraseña", txtClave);
-        agregar(form, g, 2, "Servidor", txtServidor);
+        agregar(form, g, 2, "Servidor (IP:puerto)", txtServidor);
         JButton btn = Ui.boton("Ingresar", Ui.AZUL);
         g.gridx = 0;
         g.gridy = 3;
@@ -73,8 +77,10 @@ public class LoginVista extends JFrame {
     }
 
     private void ingresar() {
-        ComercializadoraControlador ctrl = new ComercializadoraControlador(txtServidor.getText().trim());
+        String servidor = txtServidor.getText().trim();
+        ComercializadoraControlador ctrl = new ComercializadoraControlador(ComercializadoraServicio.url(servidor));
         if (ctrl.login(txtUsuario.getText().trim(), new String(txtClave.getPassword()))) {
+            PREFS.put("servidor", servidor);
             new PrincipalVista(ctrl).setVisible(true);
             dispose();
         } else {

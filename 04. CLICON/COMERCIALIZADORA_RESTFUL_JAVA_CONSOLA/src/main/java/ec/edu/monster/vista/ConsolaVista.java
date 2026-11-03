@@ -28,11 +28,13 @@ public class ConsolaVista {
 
     public static void main(String[] args) {
         Locale.setDefault(Locale.US); // montos en dólares con punto decimal: 1199.00
-        // URL del servidor: argumento 1, o http://localhost:8080/COMERCIALIZADORA/api
-        String url = args.length > 0 ? args[0] : ComercializadoraServicio.URL_POR_DEFECTO;
+        titulo("COMERCIALIZADORA DE CELULARES - LOGIN");
+        // Servidor: argumento 1 o se pregunta (Enter = misma PC). Desde otra máquina: IP de la PC servidor.
+        String servidor = args.length > 0 ? args[0]
+                : leer("Servidor IP:puerto [" + ComercializadoraServicio.SERVIDOR_POR_DEFECTO + "]: ");
+        String url = ComercializadoraServicio.url(servidor);
         ctrl = new ComercializadoraControlador(url);
 
-        titulo("COMERCIALIZADORA DE CELULARES - LOGIN");
         int intentos = 0;
         while (true) {
             String usuario = leer("Usuario: ");

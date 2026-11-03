@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import ec.edu.monster.R;
 import ec.edu.monster.controlador.ComercializadoraControlador;
+import ec.edu.monster.servicio.ComercializadoraServicio;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -31,8 +32,7 @@ public class LoginActivity extends AppCompatActivity {
 
         ingresar.setOnClickListener(v -> {
             String host = servidor.getText().toString().trim();
-            ComercializadoraControlador ctrl =
-                    new ComercializadoraControlador("http://" + host + "/COMERCIALIZADORA/api");
+            ComercializadoraControlador ctrl = new ComercializadoraControlador(ComercializadoraServicio.url(host));
             if (ctrl.login(usuario.getText().toString().trim(), clave.getText().toString())) {
                 prefs.edit().putString("servidor", host).apply();
                 Ui.ctrl = ctrl;

@@ -23,9 +23,9 @@ node "Clientes de la Comercializadora (MVC: vista - controlador - servicio - mod
 }
 
 node "Servidor de aplicaciones Payara 5.2022.5 (Java EE 8)  ·  :8080" as PAY {
-  component "COMERCIALIZADORA_WEB\nCliente Web JSP + Servlets" as WEB
-  component "COMERCIALIZADORA (WAR)\nJAX-RS /COMERCIALIZADORA/api\n· telefonos (CRUD)\n· facturas\n· creditos (consulta)" as COM
-  component "BANQUITO_CORE (WAR)\nJAX-RS /BANQUITO_CORE/api\n· creditos/sujeto/{cedula}\n· creditos/monto-maximo/{cod}\n· POST creditos\n· creditos/{cod}/amortizacion" as BAN
+  component "COMERCIALIZADORA_RESTFUL_JAVA_WEB\nCliente Web JSP + Servlets" as WEB
+  component "COMERCIALIZADORA_RESTFUL_JAVA_GR06 (WAR)\nJAX-RS /COMERCIALIZADORA_RESTFUL_JAVA_GR06/webresources\n· telefonos (CRUD)\n· facturas\n· creditos (consulta)" as COM
+  component "BANQUITO_CORE_RESTFUL_JAVA_GR06 (WAR)\nJAX-RS /BANQUITO_CORE_RESTFUL_JAVA_GR06/webresources\n· creditos/sujeto/{cedula}\n· creditos/monto-maximo/{cod}\n· POST creditos\n· creditos/{cod}/amortizacion" as BAN
 }
 
 node "Docker: mysql_banquito_gr06 (MySQL 8.4)  ·  :3307" as DK {

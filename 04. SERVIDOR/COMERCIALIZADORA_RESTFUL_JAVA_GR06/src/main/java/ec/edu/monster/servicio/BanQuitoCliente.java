@@ -22,7 +22,7 @@ import javax.ws.rs.core.Response;
 public class BanQuitoCliente {
 
     private static final String URL_BANQUITO = System.getenv().getOrDefault(
-            "BANQUITO_URL", "http://localhost:8080/BANQUITO_CORE/api");
+            "BANQUITO_URL", "http://localhost:8080/BANQUITO_CORE_RESTFUL_JAVA_GR06/webresources");
     private static final Client CLIENTE = ClientBuilder.newClient();
 
     private WebTarget creditos() {

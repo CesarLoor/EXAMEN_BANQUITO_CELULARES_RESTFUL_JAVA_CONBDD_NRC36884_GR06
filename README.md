@@ -12,11 +12,11 @@ Cada una tiene su propia base de datos MySQL. Además hay 4 clientes: consola, e
 ```
 01. UML/            Diagramas (.puml fuente + .png): casos de uso, E-R, modelo del Core, arquitectura, secuencia
 02. BDD/            docker-compose.yml + scripts/01_banquito_core.sql + scripts/02_comercializadora.sql
-04. SERVIDOR/       BANQUITO_CORE_RESTFUL_JAVA_GR06      -> /BANQUITO_CORE/api      (+ página de pruebas en /BANQUITO_CORE/)
-                    COMERCIALIZADORA_RESTFUL_JAVA_GR06   -> /COMERCIALIZADORA/api
+04. SERVIDOR/       BANQUITO_CORE_RESTFUL_JAVA_GR06      -> /BANQUITO_CORE_RESTFUL_JAVA_GR06/webresources  (+ página de pruebas en /BANQUITO_CORE_RESTFUL_JAVA_GR06/)
+                    COMERCIALIZADORA_RESTFUL_JAVA_GR06   -> /COMERCIALIZADORA_RESTFUL_JAVA_GR06/webresources
 04. CLICON/         Cliente consola      (Java 17 + Gson)
 04. CLIESC/         Cliente escritorio   (Swing + FlatLaf)
-04. WEB/            Cliente web          (JSP + Servlets)  -> /COMERCIALIZADORA_WEB
+04. WEB/            Cliente web          (JSP + Servlets)  -> /COMERCIALIZADORA_RESTFUL_JAVA_WEB
 04. CLIMOV/         Cliente móvil        (Android, Java)
 05. DOCUMENTACION/  Documento Word/PDF: arquitectura, casos de uso, ECUD, BDD, E-R, servicios, clientes, matriz de rúbrica
 desplegar.bat       Compila todo con Maven y despliega los 3 WAR en Payara 5
@@ -25,15 +25,32 @@ desplegar.bat       Compila todo con Maven y despliega los 3 WAR en Payara 5
 ## Arranque rápido
 
 1. `cd "02. BDD"` y `docker compose up -d` — MySQL 8.4 en el puerto **3307** (el 3306 lo usa MariaDB local).
-2. Ejecuta `desplegar.bat`. Inicia Payara 5 (`C:\payara5`), compila y despliega BANQUITO_CORE, COMERCIALIZADORA y COMERCIALIZADORA_WEB.
-3. Clientes:
-   - **Consola:** `04. CLICON\...\ejecutar.bat`
-   - **Escritorio:** `04. CLIESC\...\ejecutar.bat`
-   - **Web:** http://localhost:8080/COMERCIALIZADORA_WEB
-   - **Móvil:** abre el proyecto en Android Studio y ejecútalo.
-     - Emulador: servidor `10.0.2.2:8080`.
-     - Celular por USB: corre `adb reverse tcp:8080 tcp:8080` y usa el servidor `127.0.0.1:8080`.
+2. Ejecuta `desplegar.bat`. Inicia Payara 5 (`C:\payara5`), compila y despliega los 3 WAR. Al final muestra la IP de la PC para las otras máquinas.
+   - También puedes hacer **Run** desde NetBeans: el context-root está fijado en `WEB-INF/glassfish-web.xml`, así que la ruta es la misma.
+3. Clientes (todos piden solo **IP:puerto** del servidor, como en los proyectos anteriores):
+   - **Consola:** `04. CLICON\...\ejecutar.bat`. Pregunta el servidor; Enter = `localhost:8080`.
+   - **Escritorio:** `04. CLIESC\...\ejecutar.bat`. El servidor se escribe en el login y se recuerda.
+   - **Web:** http://localhost:8080/COMERCIALIZADORA_RESTFUL_JAVA_WEB/
+   - **Móvil:** abre el proyecto en Android Studio y ejecútalo. En el login escribe el servidor:
+     - Emulador: `10.0.2.2:8080`.
+     - Celular en la misma Wi-Fi: IP de la PC, por ejemplo `10.97.118.144:8080`.
+     - Celular por USB: corre `adb reverse tcp:8080 tcp:8080` y usa `127.0.0.1:8080`.
 4. Login en todos los clientes: **MONSTER / MONSTER69**.
+
+## Acceso desde otras máquinas y celulares
+
+Payara escucha en `0.0.0.0:8080`. Cualquier equipo de la **misma red** entra con la IP de la PC servidor (`desplegar.bat` la muestra al final; también la ves con `ipconfig`):
+
+| Aplicación | URL |
+|---|---|
+| Cliente web | `http://IP:8080/COMERCIALIZADORA_RESTFUL_JAVA_WEB/` |
+| REST Comercializadora (consola, escritorio, móvil) | `http://IP:8080/COMERCIALIZADORA_RESTFUL_JAVA_GR06/webresources/...` |
+| REST BanQuito Core | `http://IP:8080/BANQUITO_CORE_RESTFUL_JAVA_GR06/webresources/creditos/...` |
+| Página de pruebas BanQuito | `http://IP:8080/BANQUITO_CORE_RESTFUL_JAVA_GR06/` |
+
+- El firewall de Windows debe permitir la entrada a `java.exe` (JDK 17, el de Payara) o al puerto 8080. Windows lo pregunta la primera vez que arranca Payara.
+- La red no debe aislar a los clientes entre sí. Algunas Wi-Fi de universidad lo hacen; en ese caso usa el hotspot del celular, como en los proyectos anteriores (`172.20.10.x`).
+- MySQL (3307) no se expone: solo lo usan los servidores dentro de la misma PC.
 
 Para volver a los datos iniciales antes de la defensa:
 

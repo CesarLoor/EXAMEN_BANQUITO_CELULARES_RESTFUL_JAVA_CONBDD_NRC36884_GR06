@@ -38,7 +38,7 @@
     </dependencies>
 
     <build>
-        <finalName>COMERCIALIZADORA</finalName>
+        <finalName>COMERCIALIZADORA_RESTFUL_JAVA_GR06</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
