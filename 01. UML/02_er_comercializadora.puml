@@ -1,0 +1,63 @@
+@startuml er_comercializadora
+!pragma layout smetana
+title Diagrama Entidad-Relación - Comercializadora de Teléfonos Celulares (BDD comercializadora)
+hide circle
+skinparam linetype ortho
+skinparam class {
+  BackgroundColor #FFFFFF
+  BorderColor #0B3D91
+  HeaderBackgroundColor #E8EEFB
+}
+
+entity "CLIENTE" as CLIENTE {
+  * COD_CLIENTE : INT <<PK>>
+  --
+  * CEDULA : VARCHAR(10) <<UQ>>
+  * NOMBRE : VARCHAR(100)
+}
+
+entity "TELEFONO" as TELEFONO {
+  * COD_TELEFONO : INT <<PK>>
+  --
+  * MARCA : VARCHAR(50)
+  * MODELO : VARCHAR(100)
+  * PRECIO : NUMERIC(10,2)
+  * ACTIVO : BOOLEAN
+}
+
+entity "FORMA_PAGO" as FORMA_PAGO {
+  * COD_FORMA_PAGO : VARCHAR(10) <<PK>>
+  --
+  * DESCRIPCION : VARCHAR(50)
+  * PORC_DESCUENTO : NUMERIC(5,2)
+}
+
+entity "FACTURA" as FACTURA {
+  * COD_FACTURA : INT <<PK>>
+  --
+  * NUM_FACTURA : VARCHAR(17) <<UQ>>
+  * FECHA : DATETIME
+  * COD_CLIENTE : INT <<FK>>
+  * COD_FORMA_PAGO : VARCHAR(10) <<FK>>
+  * SUBTOTAL : NUMERIC(10,2)
+  * DESCUENTO : NUMERIC(10,2)
+  * TOTAL : NUMERIC(10,2)
+  COD_CREDITO : INT  (crédito en BanQuito)
+  PLAZO_MESES : INT
+}
+
+entity "DETALLE_FACTURA" as DETALLE {
+  * COD_DETALLE : INT <<PK>>
+  --
+  * COD_FACTURA : INT <<FK>>
+  * COD_TELEFONO : INT <<FK>>
+  * CANTIDAD : INT
+  * PRECIO_UNITARIO : NUMERIC(10,2)
+  * SUBTOTAL : NUMERIC(10,2)
+}
+
+CLIENTE ||--o{ FACTURA : "compra"
+FORMA_PAGO ||--o{ FACTURA : "se paga con"
+FACTURA ||--|{ DETALLE : "contiene"
+TELEFONO ||--o{ DETALLE : "se vende en"
+@enduml

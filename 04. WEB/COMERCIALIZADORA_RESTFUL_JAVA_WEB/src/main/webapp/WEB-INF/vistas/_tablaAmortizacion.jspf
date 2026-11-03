@@ -1,0 +1,27 @@
+<%-- Espera la variable "cr" (crédito con tablaAmortizacion) en el page scope --%>
+<div class="resumen">
+  <span>Crédito <b>#${cr.codCredito}</b></span>
+  <span>Cliente <b><c:out value="${cr.nombre}"/></b></span>
+  <span>Valor préstamo <b>$<fmt:formatNumber value="${cr.monto}" pattern="#,##0.00"/></b></span>
+  <span>Cuotas <b>${cr.plazoMeses}</b></span>
+  <span>Tasa anual <b>${cr.tasaAnual}%</b></span>
+  <span>Cuota fija <b>$<fmt:formatNumber value="${cr.cuotaFija}" pattern="#,##0.00"/></b></span>
+  <span>Intereses <b>$<fmt:formatNumber value="${cr.totalIntereses}" pattern="#,##0.00"/></b></span>
+  <span>Total a pagar <b>$<fmt:formatNumber value="${cr.totalPagar}" pattern="#,##0.00"/></b></span>
+  <span class="etiqueta ${cr.estado == 'ACTIVO' ? 'verde' : ''}">${cr.estado}</span>
+</div>
+<div class="tabla-scroll">
+<table>
+  <tr><th># Cuota</th><th>Vence</th><th class="num">Valor Cuota</th><th class="num">Interés Pagado</th>
+      <th class="num">Capital Pagado</th><th class="num">Saldo</th></tr>
+  <tr><td>0</td><td>${cr.fechaCredito}</td><td></td><td></td><td></td>
+      <td class="num"><fmt:formatNumber value="${cr.monto}" pattern="#,##0.00"/></td></tr>
+  <c:forEach var="q" items="${cr.tablaAmortizacion}">
+    <tr><td>${q.numCuota}</td><td>${q.fechaVencimiento}</td>
+      <td class="num"><fmt:formatNumber value="${q.valorCuota}" pattern="#,##0.00"/></td>
+      <td class="num"><fmt:formatNumber value="${q.interesPagado}" pattern="#,##0.00"/></td>
+      <td class="num"><fmt:formatNumber value="${q.capitalPagado}" pattern="#,##0.00"/></td>
+      <td class="num"><fmt:formatNumber value="${q.saldo}" pattern="#,##0.00"/></td></tr>
+  </c:forEach>
+</table>
+</div>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical" android:padding="12dp">
+
+        <com.google.android.material.card.MaterialCardView style="@style/Tarjeta" app:cardCornerRadius="12dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical" android:padding="14dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="Teléfonos" android:textColor="@color/azul" android:textStyle="bold" android:textSize="16sp" />
+                <Spinner android:id="@+id/spTelefono" android:layout_width="match_parent" android:layout_height="48dp" />
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="horizontal" android:gravity="center_vertical">
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content"
+                        android:hint="Cantidad">
+                        <com.google.android.material.textfield.TextInputEditText android:id="@+id/txtCantidad"
+                            android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:inputType="number" android:text="1" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.button.MaterialButton android:id="@+id/btnAgregar"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp" android:text="Agregar" />
+                    <com.google.android.material.button.MaterialButton android:id="@+id/btnLimpiar"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Limpiar" />
+                </LinearLayout>
+                <TextView android:id="@+id/lblCarrito" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="(sin teléfonos)" />
+                <TextView android:id="@+id/lblTotales" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:layout_marginTop="8dp" android:gravity="end"
+                    android:textColor="@color/azul" android:textStyle="bold" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView style="@style/Tarjeta" app:cardCornerRadius="12dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical" android:padding="14dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="Cliente y forma de pago" android:textColor="@color/azul"
+                    android:textStyle="bold" android:textSize="16sp" />
+                <com.google.android.material.textfield.TextInputLayout style="@style/Campo" android:hint="Cédula">
+                    <com.google.android.material.textfield.TextInputEditText android:id="@+id/txtCedula"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:inputType="number" android:maxLength="10" />
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout style="@style/Campo"
+                    android:hint="Nombre (solo cliente nuevo en efectivo)">
+                    <com.google.android.material.textfield.TextInputEditText android:id="@+id/txtNombre"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:inputType="textPersonName|textCapWords" />
+                </com.google.android.material.textfield.TextInputLayout>
+                <RadioGroup android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp">
+                    <RadioButton android:id="@+id/rbEfectivo" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:text="Efectivo (42% de descuento)" android:checked="true" />
+                    <RadioButton android:id="@+id/rbCredito" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:text="Crédito directo BanQuito" />
+                </RadioGroup>
+                <LinearLayout android:id="@+id/bloqueCredito" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:orientation="vertical">
+                    <com.google.android.material.textfield.TextInputLayout style="@style/Campo"
+                        android:hint="Plazo en meses (3 - 18)">
+                        <com.google.android.material.textfield.TextInputEditText android:id="@+id/txtPlazo"
+                            android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:inputType="number" android:text="6" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.button.MaterialButton android:id="@+id/btnVerificar"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:text="Verificar sujeto de crédito" />
+                    <TextView android:id="@+id/lblEvaluacion" android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <ProgressBar android:id="@+id/progreso" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:layout_gravity="center" android:visibility="gone" />
+                <com.google.android.material.button.MaterialButton android:id="@+id/btnFacturar"
+                    android:layout_width="match_parent" android:layout_height="56dp" android:layout_marginTop="8dp"
+                    android:backgroundTint="@color/verde" android:text="FACTURAR" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView android:id="@+id/lblFactura" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:background="@color/white" android:padding="14dp" android:visibility="gone"
+            android:textColor="#1C2433" android:fontFamily="monospace" android:textSize="13sp" />
+        <LinearLayout android:id="@+id/contAmortizacion" android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginTop="12dp"
+            android:background="@color/white" android:padding="8dp" />
+    </LinearLayout>
+</ScrollView>

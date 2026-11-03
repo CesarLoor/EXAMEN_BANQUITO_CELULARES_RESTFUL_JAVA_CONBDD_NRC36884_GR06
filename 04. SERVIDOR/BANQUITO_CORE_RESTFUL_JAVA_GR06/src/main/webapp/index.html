@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BanQuito Core - Módulo de Crédito</title>
+<style>
+  :root { --azul:#0b3d91; --fondo:#f3f6fb; --borde:#d5deec; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:Segoe UI,Roboto,Arial,sans-serif; background:var(--fondo); color:#1c2433; }
+  header { background:var(--azul); color:#fff; padding:18px 24px; }
+  header h1 { margin:0; font-size:22px; } header p { margin:4px 0 0; opacity:.85; font-size:14px; }
+  main { max-width:1100px; margin:0 auto; padding:20px 16px; display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); }
+  section { background:#fff; border:1px solid var(--borde); border-radius:10px; padding:16px; }
+  h2 { margin:0 0 4px; font-size:16px; color:var(--azul); }
+  code { background:#eef2f9; padding:2px 6px; border-radius:4px; font-size:12px; }
+  label { display:block; font-size:13px; margin-top:10px; }
+  input { width:100%; padding:8px; border:1px solid var(--borde); border-radius:6px; font-size:14px; }
+  button { margin-top:12px; background:var(--azul); color:#fff; border:0; padding:9px 16px; border-radius:6px; cursor:pointer; }
+  #salida { grid-column:1/-1; }
+  pre { background:#0f1726; color:#cde3ff; padding:12px; border-radius:8px; max-height:420px; overflow:auto; font-size:12px; white-space:pre-wrap; }
+  table { width:100%; border-collapse:collapse; margin-top:10px; font-size:13px; }
+  th,td { border:1px solid var(--borde); padding:6px; text-align:right; } th { background:#eef2f9; }
+</style>
+</head>
+<body>
+<header>
+  <h1>BanQuito Core · Módulo de Crédito (REST)</h1>
+  <p>GR06 · NRC 36884 · Servicios web consumidos por la Comercializadora de Celulares</p>
+</header>
+<main>
+  <section>
+    <h2>1. ¿Es sujeto de crédito?</h2>
+    <code>GET api/creditos/sujeto/{cedula}</code>
+    <label>Cédula <input id="cedula" value="1712345678"></label>
+    <button onclick="llamar('GET','api/creditos/sujeto/'+val('cedula'))">Verificar</button>
+  </section>
+  <section>
+    <h2>2. Monto máximo de crédito</h2>
+    <code>GET api/creditos/monto-maximo/{codCliente}</code>
+    <label>Código de cliente <input id="codMax" value="1" type="number"></label>
+    <button onclick="llamar('GET','api/creditos/monto-maximo/'+val('codMax'))">Calcular</button>
+  </section>
+  <section>
+    <h2>3. Otorgar crédito</h2>
+    <code>POST api/creditos</code>
+    <label>Código de cliente <input id="codCli" value="1" type="number"></label>
+    <label>Precio del celular <input id="precio" value="450" type="number" step="0.01"></label>
+    <label>Número de cuotas (3 - 18) <input id="cuotas" value="6" type="number" min="3" max="18"></label>
+    <button onclick="llamar('POST','api/creditos',{codCliente:+val('codCli'),precioTelefono:+val('precio'),numeroCuotas:+val('cuotas')})">Otorgar</button>
+  </section>
+  <section>
+    <h2>4. Tabla de amortización</h2>
+    <code>GET api/creditos/{codCredito}/amortizacion</code>
+    <label>Código de crédito <input id="codCre" value="1" type="number"></label>
+    <button onclick="llamar('GET','api/creditos/'+val('codCre')+'/amortizacion')">Consultar</button>
+    <p style="font-size:13px;margin-bottom:0">También: <code>GET api/creditos/cliente/{cedula}</code></p>
+  </section>
+  <section id="salida">
+    <h2>Respuesta</h2>
+    <div id="tabla"></div>
+    <pre id="json">Elija un servicio…</pre>
+  </section>
+</main>
+<script>
+  const val = id => document.getElementById(id).value.trim();
+  async function llamar(metodo, url, cuerpo) {
+    const out = document.getElementById('json'), tabla = document.getElementById('tabla');
+    out.textContent = 'Consultando…'; tabla.innerHTML = '';
+    try {
+      const r = await fetch(url, { method: metodo, headers: { 'Content-Type': 'application/json' },
+                                   body: cuerpo ? JSON.stringify(cuerpo) : undefined });
+      const datos = await r.json();
+      out.textContent = 'HTTP ' + r.status + '\n' + JSON.stringify(datos, null, 2);
+      if (datos.tablaAmortizacion) {
+        const filas = datos.tablaAmortizacion.map(c =>
+          `<tr><td>${c.numCuota}</td><td>${c.fechaVencimiento}</td><td>${c.valorCuota.toFixed(2)}</td><td>${c.interesPagado.toFixed(2)}</td><td>${c.capitalPagado.toFixed(2)}</td><td>${c.saldo.toFixed(2)}</td></tr>`).join('');
+        tabla.innerHTML = `<table><tr><th># Cuota</th><th>Vence</th><th>Valor Cuota</th><th>Interés Pagado</th><th>Capital Pagado</th><th>Saldo</th></tr>
+          <tr><td>0</td><td>${datos.fechaCredito}</td><td></td><td></td><td></td><td>${datos.monto.toFixed(2)}</td></tr>${filas}</table>`;
+      }
+    } catch (e) { out.textContent = 'Error: ' + e.message; }
+  }
+</script>
+</body>
+</html>

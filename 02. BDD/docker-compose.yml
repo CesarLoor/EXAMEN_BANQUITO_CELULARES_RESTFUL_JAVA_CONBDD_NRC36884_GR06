@@ -1,0 +1,20 @@
+# MySQL 8.4 para BanQuito Core + Comercializadora (GR06)
+# Uso:  docker compose up -d      (crea y carga las 2 BDD la primera vez)
+# Reset: docker compose down -v && docker compose up -d
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: mysql_banquito_gr06
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      TZ: America/Guayaquil
+    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci", "--default-time-zone=-05:00"]
+    ports:
+      - "3307:3306"   # 3306 suele estar ocupado por un MySQL/MariaDB local
+    volumes:
+      - ./scripts:/docker-entrypoint-initdb.d:ro
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:

@@ -1,0 +1,26 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Tema" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <item name="colorPrimary">@color/azul</item>
+        <item name="colorPrimaryVariant">@color/azul_oscuro</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/verde</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="android:windowBackground">@color/fondo</item>
+        <!-- Android 15 fuerza edge-to-edge: sin esto el contenido queda debajo de la barra superior -->
+        <item name="android:windowOptOutEdgeToEdgeEnforcement" tools:targetApi="35">true</item>
+    </style>
+    <style name="Tema.SinBarra" parent="Tema">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Tarjeta">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">12dp</item>
+    </style>
+    <style name="Campo" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">8dp</item>
+    </style>
+</resources>

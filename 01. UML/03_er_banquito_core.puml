@@ -1,0 +1,65 @@
+@startuml er_banquito_core
+!pragma layout smetana
+title Modelo de Base de Datos - BanQuito Core + Módulo de Crédito (BDD banquito)
+hide circle
+skinparam linetype ortho
+skinparam class {
+  BackgroundColor #FFFFFF
+  BorderColor #0B3D91
+  HeaderBackgroundColor #E8EEFB
+}
+
+package "Core bancario (dado por el enunciado)" {
+  entity "CLIENTE" as CLIENTE {
+    * COD_CLIENTE : INT <<PK>>
+    --
+    * CEDULA : VARCHAR(100) <<UQ>>
+    * NOMBRE : VARCHAR(100)
+    * GENERO : VARCHAR(1)
+    * FECHA_NACIMIENTO : DATE
+  }
+  entity "CUENTA" as CUENTA {
+    * NUM_CUENTA : VARCHAR(8) <<PK>>
+    --
+    * COD_CLIENTE : INT <<FK>>
+    * SALDO : NUMERIC(10,2)
+  }
+  entity "MOVIMIENTO" as MOVIMIENTO {
+    * COD_MOVIMIENTO : INT <<PK>>
+    --
+    * NUM_CUENTA : VARCHAR(8) <<FK>>
+    * TIPO : VARCHAR(3)  (DEP / RET)
+    * VALOR : NUMERIC(10,2)
+    * FECHA : DATE
+  }
+}
+
+package "Módulo de crédito (nuevo)" #F3F6FB {
+  entity "CREDITO" as CREDITO {
+    * COD_CREDITO : INT <<PK>>
+    --
+    * COD_CLIENTE : INT <<FK>>
+    * MONTO : NUMERIC(10,2)
+    * PLAZO_MESES : INT  (3 - 18)
+    * TASA_ANUAL : NUMERIC(5,2)  (16.50)
+    * CUOTA_FIJA : NUMERIC(10,2)
+    * FECHA_CREDITO : DATE
+    * ESTADO : VARCHAR(10)  (ACTIVO / CANCELADO)
+  }
+  entity "AMORTIZACION" as AMORTIZACION {
+    * COD_CREDITO : INT <<PK, FK>>
+    * NUM_CUOTA : INT <<PK>>
+    --
+    * VALOR_CUOTA : NUMERIC(10,2)
+    * INTERES_PAGADO : NUMERIC(10,2)
+    * CAPITAL_PAGADO : NUMERIC(10,2)
+    * SALDO : NUMERIC(10,2)
+    * FECHA_VENCIMIENTO : DATE
+  }
+}
+
+CLIENTE ||--o{ CUENTA
+CUENTA ||--o{ MOVIMIENTO
+CLIENTE ||--o{ CREDITO
+CREDITO ||--|{ AMORTIZACION
+@enduml

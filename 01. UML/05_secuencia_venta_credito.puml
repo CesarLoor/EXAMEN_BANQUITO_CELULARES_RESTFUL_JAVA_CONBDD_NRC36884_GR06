@@ -1,0 +1,40 @@
+@startuml secuencia_venta_credito
+title Diagrama de Secuencia - Venta con Crédito Directo BanQuito
+skinparam sequenceMessageAlign center
+skinparam participant {
+  BackgroundColor #E8EEFB
+  BorderColor #0B3D91
+}
+
+actor Vendedor
+participant "Cliente\n(consola/escritorio/web/móvil)" as UI
+participant "Comercializadora\nFacturaServicio" as COM
+database "BDD\ncomercializadora" as DBC
+participant "BanQuito\nCreditoServicio" as BAN
+database "BDD\nbanquito" as DBB
+
+Vendedor -> UI : teléfonos, cédula, CRÉDITO, plazo
+UI -> COM : POST /api/facturas
+COM -> DBC : precios del catálogo (activos)
+COM -> BAN : GET /api/creditos/sujeto/{cedula}
+BAN -> DBB : 4 reglas (cliente, depósito último mes,\nedad hombres >= 25, sin crédito activo)
+BAN --> COM : {sujetoCredito, codCliente, motivos}
+alt no es sujeto de crédito
+  COM --> UI : 422 {mensaje con los motivos}
+else es sujeto
+  COM -> BAN : GET /api/creditos/monto-maximo/{codCliente}
+  BAN -> DBB : AVG depósitos y retiros (3 meses)
+  BAN --> COM : {montoMaximo = (PD - PR) * 30% * 6}
+  alt total > montoMaximo
+    COM --> UI : 422 {"supera el monto máximo"}
+  else total <= montoMaximo
+    COM -> DBC : INSERT FACTURA + DETALLE (transacción abierta)
+    COM -> BAN : POST /api/creditos {codCliente, precioTelefono, numeroCuotas}
+    BAN -> DBB : INSERT CREDITO + AMORTIZACION (transacción)
+    BAN --> COM : 201 {crédito + tabla de amortización}
+    COM -> DBC : UPDATE FACTURA.COD_CREDITO ; COMMIT
+    COM --> UI : 201 {factura + crédito + tabla}
+    UI --> Vendedor : factura y tabla de amortización
+  end
+end
+@enduml

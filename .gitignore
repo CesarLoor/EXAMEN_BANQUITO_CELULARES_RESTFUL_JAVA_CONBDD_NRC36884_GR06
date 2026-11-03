@@ -1,0 +1,21 @@
+# Maven / NetBeans
+target/
+nbproject/private/
+nb-configuration.xml
+
+# Android / Gradle
+.gradle/
+build/
+local.properties
+*.iml
+.idea/
+.cxx/
+captures/
+
+# Sistema / editores
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+*.log
+~$*

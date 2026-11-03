@@ -1,0 +1,42 @@
+@startuml casos_uso_credito
+!pragma layout smetana
+title Diagrama de Casos de Uso - Módulo de Crédito BanQuito (GR06)
+left to right direction
+skinparam packageStyle rectangle
+skinparam actorStyle awesome
+skinparam usecase {
+  BackgroundColor #E8EEFB
+  BorderColor #0B3D91
+}
+
+actor "Vendedor\n(Comercializadora)" as Vendedor
+actor "Sistema\nComercializadora" as SisCom <<sistema>>
+actor "Cliente\n(comprador)" as Cliente
+
+rectangle "BanQuito Core - Módulo de Crédito" {
+  usecase "CU01 Verificar si es\nsujeto de crédito" as CU01
+  usecase "Verificar que es\ncliente del banco" as R1
+  usecase "Verificar depósito\nen el último mes" as R2
+  usecase "Verificar edad\n(hombres >= 25 años)" as R3
+  usecase "Verificar que no tenga\ncrédito activo" as R4
+  usecase "CU02 Calcular monto\nmáximo de crédito" as CU02
+  usecase "CU03 Otorgar crédito" as CU03
+  usecase "Generar tabla de\namortización" as CU04
+  usecase "CU05 Consultar tabla\nde amortización" as CU05
+}
+
+Cliente --> Vendedor : solicita compra\na crédito
+Vendedor --> SisCom
+SisCom --> CU01
+SisCom --> CU02
+SisCom --> CU03
+SisCom --> CU05
+
+CU01 ..> R1 : <<include>>
+CU01 ..> R2 : <<include>>
+CU01 ..> R3 : <<include>>
+CU01 ..> R4 : <<include>>
+CU03 ..> CU01 : <<include>>
+CU03 ..> CU02 : <<include>>
+CU03 ..> CU04 : <<include>>
+@enduml

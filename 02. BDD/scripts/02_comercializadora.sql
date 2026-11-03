@@ -1,0 +1,85 @@
+SET NAMES utf8mb4;
+-- =====================================================================
+-- COMERCIALIZADORA DE TELÉFONOS CELULARES - FACTURACIÓN (GR06 - NRC 36884)
+-- BDD independiente del Core: la comercializadora es OTRA empresa y solo
+-- se comunica con BanQuito a través de sus servicios web REST.
+-- Sin inventario: TELEFONO es solo el catálogo de equipos a la venta.
+-- =====================================================================
+DROP DATABASE IF EXISTS comercializadora;
+CREATE DATABASE comercializadora CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE comercializadora;
+
+CREATE TABLE CLIENTE (
+    COD_CLIENTE INT          NOT NULL AUTO_INCREMENT,
+    CEDULA      VARCHAR(10)  NOT NULL,
+    NOMBRE      VARCHAR(100) NOT NULL,
+    CONSTRAINT PK_CLIENTE PRIMARY KEY (COD_CLIENTE),
+    CONSTRAINT UQ_CLIENTE_CEDULA UNIQUE (CEDULA)
+);
+
+CREATE TABLE TELEFONO (
+    COD_TELEFONO INT           NOT NULL AUTO_INCREMENT,
+    MARCA        VARCHAR(50)   NOT NULL,
+    MODELO       VARCHAR(100)  NOT NULL,
+    PRECIO       NUMERIC(10,2) NOT NULL,
+    ACTIVO       BOOLEAN       NOT NULL DEFAULT TRUE,   -- baja lógica: no se borran equipos ya facturados
+    CONSTRAINT PK_TELEFONO PRIMARY KEY (COD_TELEFONO),
+    CONSTRAINT CK_TELEFONO_PRECIO CHECK (PRECIO > 0)
+);
+
+CREATE TABLE FORMA_PAGO (
+    COD_FORMA_PAGO VARCHAR(10)   NOT NULL,
+    DESCRIPCION    VARCHAR(50)   NOT NULL,
+    PORC_DESCUENTO NUMERIC(5,2)  NOT NULL DEFAULT 0,
+    CONSTRAINT PK_FORMA_PAGO PRIMARY KEY (COD_FORMA_PAGO)
+);
+
+CREATE TABLE FACTURA (
+    COD_FACTURA    INT           NOT NULL AUTO_INCREMENT,
+    NUM_FACTURA    VARCHAR(17)   NOT NULL,              -- 001-001-000000001
+    FECHA          DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    COD_CLIENTE    INT           NOT NULL,
+    COD_FORMA_PAGO VARCHAR(10)   NOT NULL,
+    SUBTOTAL       NUMERIC(10,2) NOT NULL,
+    DESCUENTO      NUMERIC(10,2) NOT NULL DEFAULT 0,
+    TOTAL          NUMERIC(10,2) NOT NULL,
+    COD_CREDITO    INT           NULL,                  -- código del crédito otorgado por BanQuito
+    PLAZO_MESES    INT           NULL,
+    CONSTRAINT PK_FACTURA PRIMARY KEY (COD_FACTURA),
+    CONSTRAINT UQ_FACTURA_NUM UNIQUE (NUM_FACTURA),
+    CONSTRAINT FK_FACTURA_CLIENTE FOREIGN KEY (COD_CLIENTE) REFERENCES CLIENTE (COD_CLIENTE),
+    CONSTRAINT FK_FACTURA_FORMA_PAGO FOREIGN KEY (COD_FORMA_PAGO) REFERENCES FORMA_PAGO (COD_FORMA_PAGO)
+);
+
+CREATE TABLE DETALLE_FACTURA (
+    COD_DETALLE     INT           NOT NULL AUTO_INCREMENT,
+    COD_FACTURA     INT           NOT NULL,
+    COD_TELEFONO    INT           NOT NULL,
+    CANTIDAD        INT           NOT NULL,
+    PRECIO_UNITARIO NUMERIC(10,2) NOT NULL,
+    SUBTOTAL        NUMERIC(10,2) NOT NULL,
+    CONSTRAINT PK_DETALLE_FACTURA PRIMARY KEY (COD_DETALLE),
+    CONSTRAINT FK_DETALLE_FACTURA FOREIGN KEY (COD_FACTURA) REFERENCES FACTURA (COD_FACTURA),
+    CONSTRAINT FK_DETALLE_TELEFONO FOREIGN KEY (COD_TELEFONO) REFERENCES TELEFONO (COD_TELEFONO),
+    CONSTRAINT CK_DETALLE_CANTIDAD CHECK (CANTIDAD > 0)
+);
+
+-- =============================== DATOS ===============================
+INSERT INTO FORMA_PAGO (COD_FORMA_PAGO, DESCRIPCION, PORC_DESCUENTO) VALUES
+('EFECTIVO', 'Pago en efectivo',            42.00),
+('CREDITO',  'Crédito directo BanQuito',     0.00);
+
+INSERT INTO TELEFONO (MARCA, MODELO, PRECIO) VALUES
+('Samsung',  'Galaxy A16 128GB',       249.00),
+('Samsung',  'Galaxy S25 256GB',      1099.00),
+('Apple',    'iPhone 16 128GB',       1199.00),
+('Apple',    'iPhone 15 128GB',        899.00),
+('Xiaomi',   'Redmi Note 14 256GB',    329.00),
+('Xiaomi',   '14T Pro 512GB',          799.00),
+('Motorola', 'Moto G85 5G',            299.00),
+('Honor',    'Magic 7 Lite',           450.00),
+('Google',   'Pixel 9a',               599.00),
+('Huawei',   'Nova 13',                520.00);
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON comercializadora.* TO 'gr06'@'%';
+FLUSH PRIVILEGES;

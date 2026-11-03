@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- usesCleartextTraffic: el servidor Payara del laboratorio expone HTTP (sin TLS) -->
+    <application
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Tema"
+        android:usesCleartextTraffic="true">
+
+        <activity android:name=".vista.LoginActivity" android:exported="true" android:theme="@style/Tema.SinBarra"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".vista.MenuActivity" android:exported="false" android:theme="@style/Tema.SinBarra" />
+        <activity android:name=".vista.VentaActivity" android:exported="false" android:label="Facturación" />
+        <activity android:name=".vista.CatalogoActivity" android:exported="false" android:label="Catálogo de teléfonos" />
+        <activity android:name=".vista.AmortizacionActivity" android:exported="false" android:label="Tabla de amortización" />
+        <activity android:name=".vista.FacturasActivity" android:exported="false" android:label="Facturas emitidas" />
+    </application>
+</manifest>
