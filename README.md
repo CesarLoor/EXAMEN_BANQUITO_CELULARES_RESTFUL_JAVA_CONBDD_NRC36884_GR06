@@ -24,7 +24,7 @@ desplegar.bat       Compila todo con Maven y despliega los 3 WAR en Payara 5
 
 ## Arranque rápido
 
-1. `cd "02. BDD"` y `docker compose up -d` — MySQL 8.4 en el puerto **3307** (el 3306 lo usa MariaDB local).
+1. Doble clic en `02. BDD\levantar_bdd.bat` (o `cd "02. BDD"` y `docker compose up -d`) — MySQL 8.4 en el puerto **3307** (el 3306 lo usa MariaDB local). Guía paso a paso: [GUIA_DOCKER.md](GUIA_DOCKER.md).
 2. Ejecuta `desplegar.bat`. Inicia Payara 5 (`C:\payara5`), compila y despliega los 3 WAR. Al final muestra la IP de la PC para las otras máquinas.
    - También puedes hacer **Run** desde NetBeans: el context-root está fijado en `WEB-INF/glassfish-web.xml`, así que la ruta es la misma.
 3. Clientes (todos piden solo **IP:puerto** del servidor, como en los proyectos anteriores):
