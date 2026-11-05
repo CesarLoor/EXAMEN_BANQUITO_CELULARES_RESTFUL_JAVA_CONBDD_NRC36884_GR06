@@ -18,7 +18,8 @@ Cada una tiene su propia base de datos MySQL. Además hay 4 clientes: consola, e
 04. CLIESC/         Cliente escritorio   (Swing + FlatLaf)
 04. WEB/            Cliente web          (JSP + Servlets)  -> /COMERCIALIZADORA_RESTFUL_JAVA_WEB
 04. CLIMOV/         Cliente móvil        (Android, Java)
-05. DOCUMENTACION/  Documento Word/PDF: arquitectura, casos de uso, ECUD, BDD, E-R, servicios, clientes, matriz de rúbrica
+05. DOCUMENTACION/  Formato del GR03: 01. ECUD, 02. MER (conceptual, lógico, físico), 03. BD (scripts),
+                    04. DIAGRAMAS, manual WS_..._GR06.docx (paso a paso servidor y clientes) y presentación .pptx
 desplegar.bat       Compila todo con Maven y despliega los 3 WAR en Payara 5
 ```
 
