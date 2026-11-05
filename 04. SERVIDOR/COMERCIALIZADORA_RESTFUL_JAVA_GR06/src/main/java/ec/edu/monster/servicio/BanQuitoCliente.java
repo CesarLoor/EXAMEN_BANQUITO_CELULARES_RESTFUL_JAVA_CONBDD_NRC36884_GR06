@@ -80,6 +80,10 @@ public class BanQuitoCliente {
         }
         try {
             if (r.getStatus() >= 400) {
+                // El banco siempre responde errores en JSON; HTML = página del servidor (app deshabilitada/no desplegada)
+                if (!MediaType.APPLICATION_JSON_TYPE.isCompatible(r.getMediaType())) {
+                    throw new NegocioException(503, "BanQuito no está disponible (" + URL_BANQUITO + ")");
+                }
                 String msg = r.hasEntity() ? r.readEntity(Mensaje.class).mensaje : "Error HTTP " + r.getStatus();
                 // 4xx del banco = regla de negocio (se reenvía igual); 5xx = falla del banco (502 Bad Gateway)
                 throw new NegocioException(r.getStatus() < 500 ? r.getStatus() : 502, "BanQuito: " + msg);
