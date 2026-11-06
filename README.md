@@ -10,7 +10,8 @@ Dos aplicaciones web independientes que se comunican por servicios REST:
 Cada una tiene su propia base de datos MySQL. Además hay 4 clientes: consola, escritorio, web y móvil.
 
 ```
-01. UML/            Diagramas (.puml fuente + .png): casos de uso, E-R, modelo del Core, arquitectura, secuencia
+01. UML/            01. ERS/ (especificación de requerimientos, IEEE-830) · 02. ECUD/ (casos de uso detallados)
+                    03. DIAGRAMAS/ (.puml fuente + .png): casos de uso, E-R, arquitectura, secuencia
 02. BDD/            docker-compose.yml + scripts/01_banquito_core.sql + scripts/02_comercializadora.sql
 04. SERVIDOR/       BANQUITO_CORE_RESTFUL_JAVA_GR06      -> /BANQUITO_CORE_RESTFUL_JAVA_GR06/webresources  (+ página de pruebas en /BANQUITO_CORE_RESTFUL_JAVA_GR06/)
                     COMERCIALIZADORA_RESTFUL_JAVA_GR06   -> /COMERCIALIZADORA_RESTFUL_JAVA_GR06/webresources
@@ -18,9 +19,9 @@ Cada una tiene su propia base de datos MySQL. Además hay 4 clientes: consola, e
 04. CLIESC/         Cliente escritorio   (Swing + FlatLaf)
 04. WEB/            Cliente web          (JSP + Servlets)  -> /COMERCIALIZADORA_RESTFUL_JAVA_WEB
 04. CLIMOV/         Cliente móvil        (Android, Java)
-05. DOCUMENTACION/  Formato del GR03: 01. ECUD, 02. MER (conceptual, lógico, físico), 03. BD (scripts),
-                    04. DIAGRAMAS, manual WS_..._GR06.docx (paso a paso servidor y clientes) y presentación .pptx
+05. DOCUMENTACION/  Manual WS_..._GR06.docx (paso a paso servidor y clientes) y presentación .pptx
 desplegar.bat       Compila todo con Maven y despliega los 3 WAR en Payara 5
+iniciar_servidor.bat Levanta Docker/MySQL y Payara con las apps ya desplegadas (para el inicio de Windows: shell:startup)
 ```
 
 ## Arranque rápido
